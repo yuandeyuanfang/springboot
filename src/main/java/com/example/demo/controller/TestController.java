@@ -33,12 +33,12 @@ public class TestController {
     }
 
     @RequestMapping(value = "testSql")
-    public JSONObject testSql(@RequestBody String sql) {
+    public JSONObject testSql(String sql) {
         JSONObject result = new JSONObject();
         result.put("success", true);
         try {
             if("sql".equals(sql.substring(0,3))){
-                result.put("result", dataService.testSql(sql.substring(3,sql.length())));
+                result.put("result", dataService.testSql(sql.substring(3)));
             }
         } catch (Exception e) {
             result.put("errorMsg", e.getMessage());
