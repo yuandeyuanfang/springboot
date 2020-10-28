@@ -65,6 +65,13 @@
 			<systemPath>${project.basedir}/src/main/resources/lib/DmJdbcDriver18.jar</systemPath>
 		</dependency>
 
+		<!--代码简化 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.8</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
