@@ -1,6 +1,8 @@
 package com.example.demo.component;
 
+import com.example.demo.service.DataService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,9 @@ import java.util.Date;
 public class Scheduler {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+    @Autowired
+    DataService dataService;
 
     /**
      * 每隔3分钟执行一次
@@ -30,6 +35,9 @@ public class Scheduler {
         log.info("JVM内存的空闲空间为：" + vmFree + " MB");
         log.info("JVM总内存空间为：" + vmTotal + " MB");
         log.info("JVM最大内存空间为：" + vmMax + " MB");
+
+        //测试数据库连接状态
+        log.info("数据库连接状态：" + dataService.testData());
     }
 
 }

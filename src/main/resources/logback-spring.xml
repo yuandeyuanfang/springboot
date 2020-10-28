@@ -31,7 +31,8 @@
     <logger name="com.alibaba.dubbo" level="info"/>
     <logger name="com.dabay.oms.dao" level="error"/>
     <logger name="com.zaxxer.hikari.pool.HikariPool" level="info"/>
-    <!--<logger name="com.example.demo.mapper" level="debug"/>--><!-- 打印sql语句 -->
+    <!--打印sql语句-->
+<!--    <logger name="com.example.demo.mapper" level="debug"/>-->
 
     <root level="info">
         <appender-ref ref="console"/>
