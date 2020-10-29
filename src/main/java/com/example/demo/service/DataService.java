@@ -21,7 +21,19 @@ public class DataService {
         return dataMapper.testSql(sql);
     }
 
-    public List<ParamInfoVO> selectParamInfo() {
-        return dataMapper.selectParamInfo();
+    public List<ParamInfoVO> selectParamInfo(ParamInfoVO paramInfo) {
+        return dataMapper.selectParamInfo(paramInfo);
+    }
+
+    public void insertParamInfo(ParamInfoVO paramInfo) {
+        dataMapper.insertParamInfo(paramInfo);
+    }
+
+    public void updateParamInfo(ParamInfoVO paramInfo) {
+        dataMapper.updateParamInfo(paramInfo);
+    }
+
+    public void deleteParamInfo(ParamInfoVO paramInfo) {
+        dataMapper.deleteParamInfo(paramInfo);
     }
 }

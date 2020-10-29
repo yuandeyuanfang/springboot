@@ -11,5 +11,11 @@ public interface DataMapper {
 
     List<Object> testSql(String sql);
 
-    List<ParamInfoVO> selectParamInfo();
+    List<ParamInfoVO> selectParamInfo(ParamInfoVO paramInfo);
+
+    void insertParamInfo(ParamInfoVO paramInfo);
+
+    void updateParamInfo(ParamInfoVO paramInfo);
+
+    void deleteParamInfo(ParamInfoVO paramInfo);
 }

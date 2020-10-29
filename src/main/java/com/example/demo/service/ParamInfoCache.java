@@ -23,7 +23,7 @@ public class ParamInfoCache {
 	 */
 	public synchronized void init()  {
 		log.info("[ParamInfo][init][start]");
-		List<ParamInfoVO> countryList = dataService.selectParamInfo();
+		List<ParamInfoVO> countryList = dataService.selectParamInfo(null);
 		if( countryList != null ) {
 			ConcurrentHashMap<String, String> tempMaps = new ConcurrentHashMap<String, String>();
 			for( ParamInfoVO paramInfo : countryList ) {

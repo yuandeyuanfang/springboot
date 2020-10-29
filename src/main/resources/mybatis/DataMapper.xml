@@ -15,8 +15,32 @@
         <result column="param_value" jdbcType="VARCHAR" property="paramValue"/>
     </resultMap>
 
-    <select id="selectParamInfo" resultMap="ParamInfoMap">
+    <select id="selectParamInfo" parameterType="com.example.demo.vo.ParamInfoVO" resultMap="ParamInfoMap">
         select param_name, param_value from param_info
+        <where>
+            <if test="paramName != null and paramName != ''">
+                and param_name = #{paramName}
+            </if>
+        </where>
     </select>
+
+    <insert id="insertParamInfo" parameterType="com.example.demo.vo.ParamInfoVO">
+        insert into param_info (param_name, param_value)
+        values (#{paramName,jdbcType=VARCHAR},#{paramValue,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateParamInfo" parameterType="com.example.demo.vo.ParamInfoVO">
+        update param_info set
+        <trim suffixOverrides=",">
+            <if test="paramValue != null">
+                param_value = #{paramValue},
+            </if>
+        </trim>
+        where param_name = #{paramName}
+    </update>
+
+    <delete id="deleteParamInfo" parameterType="com.example.demo.vo.ParamInfoVO">
+        delete from param_info where param_name = #{paramName}
+    </delete>
 
 </mapper>
