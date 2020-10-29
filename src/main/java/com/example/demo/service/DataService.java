@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.mapper.DataMapper;
+import com.example.demo.vo.ParamInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +21,7 @@ public class DataService {
         return dataMapper.testSql(sql);
     }
 
+    public List<ParamInfoVO> selectParamInfo() {
+        return dataMapper.selectParamInfo();
+    }
 }

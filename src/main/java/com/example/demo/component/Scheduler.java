@@ -1,6 +1,7 @@
 package com.example.demo.component;
 
 import com.example.demo.service.DataService;
+import com.example.demo.service.ParamInfoCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +18,8 @@ public class Scheduler {
 
     @Autowired
     DataService dataService;
+    @Autowired
+    ParamInfoCache paramInfoCache;
 
     /**
      * 每隔3分钟执行一次
@@ -38,6 +41,9 @@ public class Scheduler {
 
         //测试数据库连接状态
         log.info("数据库连接状态：" + dataService.testData());
+
+        //刷新缓存
+        paramInfoCache.init();
     }
 
 }

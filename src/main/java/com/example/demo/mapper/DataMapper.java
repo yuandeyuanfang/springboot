@@ -1,5 +1,6 @@
 package com.example.demo.mapper;
 
+import com.example.demo.vo.ParamInfoVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface DataMapper {
 
     List<Object> testSql(String sql);
 
+    List<ParamInfoVO> selectParamInfo();
 }

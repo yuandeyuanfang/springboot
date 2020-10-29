@@ -10,4 +10,13 @@
         ${value}
     </select>
 
+    <resultMap id="ParamInfoMap" type="com.example.demo.vo.ParamInfoVO">
+        <result column="param_name" jdbcType="VARCHAR" property="paramName"/>
+        <result column="param_value" jdbcType="VARCHAR" property="paramValue"/>
+    </resultMap>
+
+    <select id="selectParamInfo" resultMap="ParamInfoMap">
+        select param_name, param_value from param_info
+    </select>
+
 </mapper>
