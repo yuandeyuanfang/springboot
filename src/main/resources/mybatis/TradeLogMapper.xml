@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.TradeLogMapper" >
+  <resultMap id="BaseResultMap" type="com.example.demo.dto.TradeLogDTO" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="TRADE_ID" property="tradeId" jdbcType="VARCHAR" />
+    <result column="MODEL" property="model" jdbcType="VARCHAR" />
+    <result column="TRADE_TYPE" property="tradeType" jdbcType="VARCHAR" />
+    <result column="EXTRA" property="extra" jdbcType="VARCHAR" />
+    <result column="TRADE_RESULT" property="tradeResult" jdbcType="VARCHAR" />
+    <result column="TRADE_BEGAIN" property="tradeBegain" jdbcType="VARCHAR" />
+    <result column="TRADE_END" property="tradeEnd" jdbcType="VARCHAR" />
+    <result column="TRADE_COST" property="tradeCost" jdbcType="BIGINT" />
+    <result column="TRADE_DATE" property="tradeDate" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.example.demo.dto.TradeLogDTO" extends="BaseResultMap" >
+    <result column="INPUT" property="input" jdbcType="LONGVARCHAR" />
+    <result column="OUTPUT" property="output" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Blob_Column_List" >
+    INPUT, OUTPUT
+  </sql>
+
+  <insert id="insert" parameterType="com.example.demo.dto.TradeLogDTO">
+    <selectKey resultType="Long" order="BEFORE" keyProperty="id">
+      SELECT TRADE_LOG_SEQ.NEXTVAL as id from DUAL
+    </selectKey>
+    insert into TRADE_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="tradeId != null" >
+        TRADE_ID,
+      </if>
+      <if test="model != null" >
+        MODEL,
+      </if>
+      <if test="tradeType != null" >
+        TRADE_TYPE,
+      </if>
+      <if test="extra != null" >
+        EXTRA,
+      </if>
+      <if test="tradeResult != null" >
+        TRADE_RESULT,
+      </if>
+      <if test="tradeBegain != null" >
+        TRADE_BEGAIN,
+      </if>
+      <if test="tradeEnd != null" >
+        TRADE_END,
+      </if>
+      <if test="tradeCost != null" >
+        TRADE_COST,
+      </if>
+      <if test="tradeDate != null" >
+        TRADE_DATE,
+      </if>
+      <if test="input != null" >
+        INPUT,
+      </if>
+      <if test="output != null" >
+        OUTPUT,
+      </if>
+      <if test="des != null" >
+        des,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id},
+      <if test="tradeId != null" >
+        #{tradeId,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null" >
+        #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="extra != null" >
+        #{extra,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeResult != null" >
+        #{tradeResult,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeBegain != null" >
+        #{tradeBegain},
+      </if>
+      <if test="tradeEnd != null" >
+        #{tradeEnd},
+      </if>
+      <if test="tradeCost != null" >
+        #{tradeCost,jdbcType=BIGINT},
+      </if>
+      <if test="tradeDate != null" >
+        #{tradeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="input != null" >
+        #{input,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="output != null" >
+        #{output,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="des != null" >
+        #{des,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="update" parameterType="com.example.demo.dto.TradeLogDTO">
+    update TRADE_LOG set
+    <trim suffixOverrides=",">
+      <if test="tradeResult != null" >
+        TRADE_RESULT = #{tradeResult,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeEnd != null" >
+        TRADE_END = #{tradeEnd},
+      </if>
+      <if test="tradeCost != null" >
+        TRADE_COST = #{tradeCost,jdbcType=BIGINT},
+      </if>
+      <if test="output != null" >
+        output = #{output,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="extra != null" >
+          extra = #{extra,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="decode != null" >
+        decode = #{decode,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+    where id = #{id}
+  </update>
+
+</mapper>

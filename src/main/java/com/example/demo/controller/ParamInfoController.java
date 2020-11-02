@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.example.demo.dto.TradeLogDTO;
 import com.example.demo.service.DataService;
+import com.example.demo.service.TradeLogService;
 import com.example.demo.vo.ParamInfoVO;
 import com.example.demo.vo.ResultVO;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ParamInfoController {
     @Autowired
     DataService dataService;
+    @Autowired
+    TradeLogService tradeLogService;
 
     @RequestMapping(value = "select")
     public ResultVO selectParamInfo(ParamInfoVO paramInfo) {
@@ -30,6 +33,9 @@ public class ParamInfoController {
 
     @RequestMapping(value = "insert")
     public ResultVO insertParamInfo(ParamInfoVO paramInfo) {
+        //记录日志
+        TradeLogDTO tradeLog = tradeLogService.tradeLoginsert(TradeLogDTO.MODEL_OA, TradeLogDTO.TYPE_OA_insertParamInfo, paramInfo);
+
         ResultVO resultVO = new ResultVO();
         resultVO.setSuccess(true);
         try {
@@ -55,7 +61,12 @@ public class ParamInfoController {
         } catch (Exception e) {
             resultVO.setResultDes(e.getMessage());
             resultVO.setSuccess(false);
+            tradeLogService.exceptionToExtra(tradeLog, e);
         }
+
+        //记录日志
+        tradeLogService.tradeLogupdate(tradeLog, resultVO);
+
         return resultVO;
     }
 
