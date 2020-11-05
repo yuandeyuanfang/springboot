@@ -16,17 +16,15 @@
     </resultMap>
 
     <select id="selectParamInfo" parameterType="com.example.demo.vo.ParamInfoVO" resultMap="ParamInfoMap">
-        select param_name, param_value from param_info
-        <where>
-            <if test="paramName != null and paramName != ''">
-                and param_name = #{paramName}
-            </if>
-        </where>
+        select param_name, param_value from param_info where PARAM_INUSE = 1
+        <if test="paramName != null and paramName != ''">
+            and param_name = #{paramName}
+        </if>
     </select>
 
     <insert id="insertParamInfo" parameterType="com.example.demo.vo.ParamInfoVO">
-        insert into param_info (param_name, param_value)
-        values (#{paramName,jdbcType=VARCHAR},#{paramValue,jdbcType=VARCHAR})
+        insert into param_info (param_name, param_value ,param_memo)
+        values (#{paramName,jdbcType=VARCHAR},#{paramValue,jdbcType=VARCHAR},#{paramMemo,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateParamInfo" parameterType="com.example.demo.vo.ParamInfoVO">
@@ -34,6 +32,12 @@
         <trim suffixOverrides=",">
             <if test="paramValue != null">
                 param_value = #{paramValue},
+            </if>
+            <if test="paramMemo != null">
+                param_memo = #{paramMemo},
+            </if>
+            <if test="paramInuse != null">
+                param_inuse = #{paramInuse},
             </if>
         </trim>
         where param_name = #{paramName}
