@@ -69,7 +69,7 @@ public class TestController {
      * @return
      */
     @RequestMapping(value = "testRedis")
-    public JSONObject testRedis(String sql) {
+    public JSONObject testRedis() {
         JSONObject result = new JSONObject();
         result.put("success", true);
         try {
