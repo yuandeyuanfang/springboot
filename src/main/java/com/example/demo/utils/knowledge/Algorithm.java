@@ -1,6 +1,4 @@
-package com.example.demo.utils;
-
-import java.util.Arrays;
+package com.example.demo.utils.knowledge;
 
 /**
  * 算法
@@ -11,12 +9,13 @@ public class Algorithm {
 //        bubbleLeft(arr);//冒泡排序-从左到右
 //        bubbleRight(arr);//冒泡排序-从右到左
 //        selectSort(arr);//选择排序
-        int low = 0;
-        int high = arr.length - 1;
+//        int low = 0;
+//        int high = arr.length - 1;
 //        quickSort(arr, low, high);//快速排序
-        System.out.println(Arrays.toString(arr));
-        reverse(-12);//整数反转
-        arraySum();//两数之和
+//        System.out.println(Arrays.toString(arr));
+//        reverse(-12);//整数反转
+//        arraySum();//两数之和
+        gameSeven();//逢七过游戏
     }
 
     /**
@@ -181,6 +180,20 @@ public class Algorithm {
             a= a/10;
         }
         System.out.println(b==(int)b ? (int)b : 0);
+    }
+
+    /**
+     * 逢七过游戏
+     */
+    public static void gameSeven(){
+        for (int i=0;i<100000;i++){
+            if((i%7==0 || String.valueOf(i).indexOf("7")>=0) && ((i+1)%7==0 || String.valueOf((i+1)).indexOf("7")>=0) && ((i+2)%7==0 || String.valueOf((i+2)).indexOf("7")>=0)){
+                System.out.println(i);
+                System.out.println(i+1);
+                System.out.println(i+2);
+                break;
+            }
+        }
     }
 
 }
