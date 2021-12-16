@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.mapper.DataMapper;
 import com.example.demo.vo.ParamInfoVO;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,10 @@ public class DataService {
 
     public List<ParamInfoVO> selectParamInfo(ParamInfoVO paramInfo) {
         return dataMapper.selectParamInfo(paramInfo);
+    }
+
+    public List<ParamInfoVO> selectParamInfoPage(ParamInfoVO paramInfo, int start, Integer size) {
+        return dataMapper.selectParamInfoPage(paramInfo, new RowBounds(start, size));
     }
 
     public void insertParamInfo(ParamInfoVO paramInfo) {

@@ -32,7 +32,7 @@
     <logger name="com.dabay.oms.dao" level="error"/>
     <logger name="com.zaxxer.hikari.pool.HikariPool" level="info"/>
     <!--打印sql语句-->
-<!--    <logger name="com.example.demo.mapper" level="debug"/>-->
+    <logger name="com.example.demo.mapper" level="debug"/>
 
     <root level="info">
         <appender-ref ref="console"/>

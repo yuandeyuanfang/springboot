@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.service.DataService;
+import com.example.demo.vo.ParamInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class TestController {
         JSONObject result = new JSONObject();
         result.put("success", true);
         try {
-            result.put("result", dataService.testData());
+            result.put("result", dataService.selectParamInfoPage(new ParamInfoVO(),0,2));
         } catch (Exception e) {
             result.put("errorMsg", e.getMessage());
             result.put("success", false);

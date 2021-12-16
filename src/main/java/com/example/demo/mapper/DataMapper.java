@@ -1,6 +1,7 @@
 package com.example.demo.mapper;
 
 import com.example.demo.vo.ParamInfoVO;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface DataMapper {
     void updateParamInfo(ParamInfoVO paramInfo);
 
     void deleteParamInfo(ParamInfoVO paramInfo);
+
+    List<ParamInfoVO> selectParamInfoPage(ParamInfoVO paramInfo, RowBounds rowBounds);
 }
