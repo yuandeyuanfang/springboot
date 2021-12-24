@@ -325,4 +325,46 @@ public class ExcelUtils {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 解析单元格内容（支持表达式）
+     * @param cell
+     * @return
+     */
+    public static String getCellValueFormula(Cell cell) {
+        if (cell == null) {
+            return "";
+        }
+        if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+            if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                return HSSFDateUtil.getJavaDate(cell.getNumericCellValue()).toString();
+            } else {
+                String cellstr = cell.toString();
+                cell.setCellType(Cell.CELL_TYPE_STRING);
+                String cellValue = cell.getStringCellValue();
+                if (cellValue.indexOf(".") > -1) {
+                    cellValue = cellstr;
+                }
+                return cellValue;
+            }
+        } else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+            return StringUtils.trimToEmpty(cell.getStringCellValue());
+        } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+            try {
+                return StringUtils.trimToEmpty(String.valueOf(cell.getNumericCellValue()));
+            } catch (IllegalStateException e) {
+                return StringUtils.trimToEmpty(String.valueOf(cell.getRichStringCellValue()));
+            }
+        } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+            return "";
+        } else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+            return String.valueOf(cell.getBooleanCellValue());
+        } else if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
+            return "ERROR";
+        } else {
+            return cell.toString().trim();
+        }
+
+    }
+
 }
