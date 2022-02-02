@@ -6,9 +6,10 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -365,6 +366,135 @@ public class ExcelUtils {
             return cell.toString().trim();
         }
 
+    }
+
+    /**
+     * 新建�?个空白页
+     * @param wb
+     * @param sheet
+     * @param row 行数
+     * @param col 列数
+     * @param colSplit 锁定表头�?
+     * @param rowSplit 锁定表头�?
+     * @param hideRow 无边框行�?
+     */
+    public static void createSheet(HSSFWorkbook wb, HSSFSheet sheet, int row,
+                                   int col, int colSplit, int rowSplit,int hideRow,int height) {
+        sheet.createFreezePane(colSplit, rowSplit);// 锁定表头
+        //设置样式
+        HSSFCellStyle style11_1=ExcelUtils.setStyleBorder(wb,(short)0x2, (short)0x1,true);
+        style11_1.setFont(ExcelUtils.setFont(wb, false, 11));
+        for (int i = 0; i < row; i++) {
+            HSSFRow r = sheet.createRow(i);
+            setHeight(sheet, i, height);
+            for (int j = 0; j < col; j++) {
+                HSSFCell cell = r.createCell(j);
+                cell.setCellStyle(style11_1);
+                cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+                if (i >= hideRow) {
+                    setBorder(wb, sheet, new CellRangeAddress(i, i, j, j));
+                }
+            }
+        }
+    }
+
+    /**
+     * 设置单元格边框线
+     * @param wb
+     * @param s
+     * @param row
+     */
+    public static void setBorder(HSSFWorkbook wb,HSSFSheet s,CellRangeAddress row){
+        RegionUtil.setBorderBottom(1, row, s,wb); // 下边�?
+        RegionUtil.setBorderLeft(1, row, s,wb); // 左边�?
+        RegionUtil.setBorderRight(1, row, s,wb); // 有边�?
+        RegionUtil.setBorderTop(1, row, s,wb); // 上边�?
+    }
+    /**
+     * 设置列宽
+     * 列宽基数�?0.72
+     * @param s
+     * @param columnIndex 第几�?
+     * @param width 列宽
+     */
+    public static void setColumnWidth(HSSFSheet s,int columnIndex, int width){
+        s.setColumnWidth(columnIndex,  (int)((width + 0.72) * 256));
+    }
+
+    /**
+     * 设置行高
+     * @param s
+     * @param row 第几�?
+     * @param height 高度
+     */
+    public static void setHeight(HSSFSheet s,int row,int height){
+        s.getRow(row).setHeight((short)  (20*height));
+    }
+
+    /**
+     * 合并单元�?
+     */
+    public static void mergeRowCol(HSSFSheet sheet,CellRangeAddress cra){
+//		CellRangeAddress cra= new CellRangeAddress(firstRow, lastRow, firstCol, lastCol);
+        sheet.addMergedRegion(cra);
+//		setBorder(wb,sheet,cra);
+    }
+
+    /**
+     * 设置字体样式
+     * @param wb
+     * @param boldweight 字体是否加粗
+     * @param fontHeightInPoints 字体大小
+     * @return
+     */
+    public static HSSFFont setFont(HSSFWorkbook wb,boolean boldweight,int fontHeightInPoints){
+        HSSFFont font = wb.createFont();
+        font.setFontName("宋体");
+        if(boldweight){
+            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//粗体显示
+        }
+        font.setFontHeightInPoints((short) fontHeightInPoints);
+        return font;
+    }
+
+    /**
+     * 设置单元格样�?
+     * @param wb
+     * @param alignment 文本位置 0x2 居中 �?0x1 居左
+     * @param verticalAlignment 水平位置 0x0 居顶 �?0x1 居中对齐
+     * @return
+     */
+    public static HSSFCellStyle setStyleBorder(HSSFWorkbook wb,short alignment,short verticalAlignment,boolean flag) {
+        //ALIGN_CENTER =
+        //ALIGN_LEFT =
+        //VERTICAL_TOP =
+        //VERTICAL_CENTER =
+
+        // 带上下左右边界�?�居中�?�自动换�?
+        HSSFCellStyle style = wb.createCellStyle();
+        if(flag){
+            style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+            style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+            style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+            style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        }
+        style.setAlignment((short)alignment);// 设置居中对齐;
+        style.setVerticalAlignment((short)verticalAlignment);// 设置垂直对齐的样式为居中对齐;
+        style.setWrapText(true);// 自动换行
+        return style;
+    }
+
+    public static HSSFRichTextString setRichText(HSSFFont font, String content){
+        if(content.endsWith("(0)")){
+            content=content.replace("(0)", "");
+            HSSFRichTextString richString = new HSSFRichTextString(content);
+            return richString;
+        }else{
+            HSSFRichTextString richString = new HSSFRichTextString(content);
+            int n = content.indexOf("(");
+            richString.applyFont(n,content.length() , font);
+            return richString;
+        }
     }
 
 }

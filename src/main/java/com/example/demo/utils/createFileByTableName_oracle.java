@@ -1,9 +1,15 @@
 package com.example.demo.utils;
 
 import oracle.jdbc.driver.OracleDriver;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +23,11 @@ public class createFileByTableName_oracle {
 
     private static String driverClassName = "oracle.jdbc.driver.OracleDriver";//数据库驱动名
     private static String url = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";//数据库地址
-    private static String username = "ecode";//用户名
-    private static String password = "ecode8329";//密码
+    private static String username = "ls57";//用户名
+    private static String password = "123456";//密码
 
-    private static String tableName = "AA10";//表名
-    private static String entityName = "AA10";//实体类名
+    private static String tableName = "TALENTS_WORK";//表名
+    private static String entityName = "TalentsWork";//实体类名
     private static String packageName = "com.insigma";//包名
     private static String filePath = "D:/createFile/";//生成文件路径名
     private static String XMLType = "Mybatis";//Mybatis或者Ibatis或者Hibernate
@@ -91,6 +97,104 @@ public class createFileByTableName_oracle {
 //		createServiceImpl(list);
         createDao(list);
         createXml(list);
+        createExcel(list);
+    }
+
+    private void createExcel(List<TableColumn> list) {
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet s = wb.createSheet();
+        wb.setSheetName(0, "表结构");
+        ExcelUtils.createSheet(wb, s, 5000, 6, 0, 0, 0,20);
+
+        //�����п� 14��
+        for (int i = 0; i < 6; i++) {
+            ExcelUtils.setColumnWidth(s,i,15);
+        }
+
+        //������ʽ
+        HSSFCellStyle style11=ExcelUtils.setStyleBorder(wb,(short)0x1, (short)0x1,true);
+        style11.setFont(ExcelUtils.setFont(wb, false, 11));
+        CellRangeAddress cra = null;
+        int indexRow = 0;
+        for (int i = 0; i < 1; i++) {
+
+            String tableName=list.get(i).getTableName();
+            System.out.println(list.get(i).getTableName()+"----"+list.get(i).getTableComments());
+            if(list.get(i).getTableComments()!=null){
+                tableName=list.get(i).getTableComments()+"("+list.get(i).getTableName()+")";
+            }
+            s.getRow(indexRow).getCell(0).setCellValue("表名");
+            s.getRow(indexRow).getCell(1).setCellValue(tableName);
+            cra=new CellRangeAddress(indexRow, indexRow, 1, 5);
+            s.addMergedRegion(cra);
+
+            s.getRow(indexRow+1).getCell(0).setCellValue("功能描述");
+            s.getRow(indexRow+1).getCell(1).setCellValue(list.get(i).getTableComments());
+            cra=new CellRangeAddress(indexRow+1, indexRow+1, 1, 5);
+            s.addMergedRegion(cra);
+
+            s.getRow(indexRow+2).getCell(0).setCellValue("字段说明");
+            cra=new CellRangeAddress(indexRow+2, indexRow+list.size()+2, 0,0);
+            s.addMergedRegion(cra);
+
+
+            String[] col = {"字段名","说明","类型","可空","说明"};
+            for (int k = 0; k < col.length; k++) {
+                s.getRow(indexRow+2).getCell(k+1).setCellValue(col[k]);
+            }
+            List<TableColumn> clist = list;
+            for (int k = 0; k < clist.size(); k++) {
+
+                HSSFRow r = s.getRow(indexRow+3+k);
+                r.getCell(1).setCellStyle(style11);
+                r.getCell(2).setCellStyle(style11);
+                r.getCell(3).setCellStyle(style11);
+                r.getCell(4).setCellStyle(style11);
+                r.getCell(5).setCellStyle(style11);
+
+                r.getCell(1).setCellValue(getName(clist.get(k).getColumnName().toLowerCase()));
+                r.getCell(2).setCellValue(clist.get(k).getColumnComments());
+                String type = clist.get(k).getDataType();
+                if(!"".equals(clist.get(k).getDataLength())){
+                    type=type+"("+clist.get(k).getDataLength()+")";
+                }
+                r.getCell(3).setCellValue(getType(clist.get(k).getDataType(), false, clist.get(k).getScale()));
+                r.getCell(4).setCellValue(clist.get(k).getNullable());
+                r.getCell(5).setCellValue(clist.get(k).getColumnComments());
+                System.out.println(indexRow+3+k);
+            }
+
+
+            s.getRow(indexRow+list.size()+3).getCell(0).setCellValue("主键");
+            s.getRow(indexRow+list.size()+3).getCell(1).setCellValue("");
+            cra=new CellRangeAddress(indexRow+list.size()+3, indexRow+list.size()+3, 1, 5);
+            s.addMergedRegion(cra);
+
+            s.getRow(indexRow+list.size()+4).getCell(0).setCellValue("索引");
+            cra=new CellRangeAddress(indexRow+list.size()+4, indexRow+list.size()+4, 1, 5);
+            s.addMergedRegion(cra);
+
+            indexRow+=list.size()+7;
+        }
+
+        FileOutputStream fos = null;
+        try {
+            File excelFile = new File(filePath+"excel.xls");
+            excelFile.delete();
+            // �ж��ļ�·���Ƿ����
+            if (!excelFile.exists()) {
+                excelFile.createNewFile();
+            }
+            fos = new FileOutputStream(excelFile);
+            wb.write(fos);
+            fos.close();
+            long end = System.currentTimeMillis();
+            System.out.println("����excel���"+end);
+        } catch (IOException e) {
+            System.out.println(e);
+        } finally {
+            // excelFile.delete();�Դ������ļ�����ɾ��
+        }
     }
 
     /**
@@ -133,7 +237,7 @@ public class createFileByTableName_oracle {
 					sb.append(System.getProperty("line.separator"));
 					sb.append("     */");
 					sb.append(System.getProperty("line.separator"));
-                    sb.append("    private " + getType(tableColumn.getDataType(), false, tableColumn.getScale()) + " " + tableColumn.getColumnName().toLowerCase() + ";");
+                    sb.append("    private " + getType(tableColumn.getDataType(), false, tableColumn.getScale()) + " " + getName(tableColumn.getColumnName().toLowerCase()) + ";");
                     sb.append(System.getProperty("line.separator"));
                 }
 //			for (TableColumn tableColumn : list) {
@@ -673,12 +777,12 @@ public class createFileByTableName_oracle {
      *
      * @param name
      */
-    public String getName(String name) {
+    public static String getName(String name) {
         if (name != null && name.length() > 0) {
-            if (name.length() == 1) {
-                return name.toUpperCase();
+            if (name.indexOf("_")>0) {
+                return getName(name.substring(0,name.indexOf("_"))+name.substring(name.indexOf("_")+1,name.indexOf("_")+2).toUpperCase()+name.substring(name.indexOf("_")+2));
             } else {
-                return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+                return name;
             }
         } else {
             return "";
