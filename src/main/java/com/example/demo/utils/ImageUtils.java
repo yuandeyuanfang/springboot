@@ -6,6 +6,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 @Slf4j
@@ -82,4 +83,31 @@ public class ImageUtils {
         }
         return null;
     }
+
+    /**
+     *
+     * 将base64码转换成文件
+     *
+     * @param base64Code
+     * @param file
+     */
+    public static void downloadFile(String base64Code, File file) {
+        FileOutputStream fos = null;
+        try {
+            byte[] bytes = org.apache.commons.codec.binary.Base64.decodeBase64(base64Code);
+            fos = new FileOutputStream(file);
+            fos.write(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fos != null) {
+                    fos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
