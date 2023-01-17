@@ -6,6 +6,8 @@ import com.example.demo.service.TradeLogService;
 import com.example.demo.vo.ParamInfoVO;
 import com.example.demo.vo.ResultVO;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,7 @@ public class ParamInfoController {
     DataService dataService;
     @Autowired
     TradeLogService tradeLogService;
+    protected Logger logger = LoggerFactory.getLogger(ParamInfoController.class);
 
     @RequestMapping(value = "select")
     public ResultVO selectParamInfo(ParamInfoVO paramInfo) {
@@ -25,6 +28,7 @@ public class ParamInfoController {
         try {
             resultVO.setResult(dataService.selectParamInfo(paramInfo));
         } catch (Exception e) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getClassName()+"-"+Thread.currentThread().getStackTrace()[1].getMethodName(),e);
             resultVO.setResultDes(e.getMessage());
             resultVO.setSuccess(false);
         }
