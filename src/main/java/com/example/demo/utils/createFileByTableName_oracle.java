@@ -22,12 +22,12 @@ import java.util.List;
 public class createFileByTableName_oracle {
 
     private static String driverClassName = "oracle.jdbc.driver.OracleDriver";//数据库驱动名
-    private static String url = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";//数据库地址
-    private static String username = "ls57";//用户名
+    private static String url = "jdbc:oracle:thin:@192.168.203.197:1521:xe";//数据库地址
+    private static String username = "ls58";//用户名
     private static String password = "123456";//密码
 
-    private static String tableName = "TALENTS_WORK";//表名
-    private static String entityName = "TalentsWork";//实体类名
+    private static String tableName = "LS_RETIRE_INFO";//表名
+    private static String entityName = "BaseUserAc43";//实体类名
     private static String packageName = "com.insigma";//包名
     private static String filePath = "D:/createFile/";//生成文件路径名
     private static String XMLType = "Mybatis";//Mybatis或者Ibatis或者Hibernate
@@ -92,11 +92,11 @@ public class createFileByTableName_oracle {
                 e.printStackTrace();
             }
         }
-        createEntity(list);
+//        createEntity(list);
 //		createService(list);
 //		createServiceImpl(list);
-        createDao(list);
-        createXml(list);
+//        createDao(list);
+//        createXml(list);
         createExcel(list);
     }
 
@@ -237,6 +237,8 @@ public class createFileByTableName_oracle {
 					sb.append(System.getProperty("line.separator"));
 					sb.append("     */");
 					sb.append(System.getProperty("line.separator"));
+                    sb.append("    @ApiModelProperty(\""+tableColumn.getColumnComments()+"\")");
+                    sb.append(System.getProperty("line.separator"));
                     sb.append("    private " + getType(tableColumn.getDataType(), false, tableColumn.getScale()) + " " + getName(tableColumn.getColumnName().toLowerCase()) + ";");
                     sb.append(System.getProperty("line.separator"));
                 }
