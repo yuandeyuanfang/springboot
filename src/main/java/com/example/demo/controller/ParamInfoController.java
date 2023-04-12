@@ -5,6 +5,8 @@ import com.example.demo.service.DataService;
 import com.example.demo.service.TradeLogService;
 import com.example.demo.vo.ParamInfoVO;
 import com.example.demo.vo.ResultVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "paramInfo")
+@Api(tags = "参数管理")
 public class ParamInfoController {
     @Autowired
     DataService dataService;
@@ -22,6 +25,7 @@ public class ParamInfoController {
     protected Logger logger = LoggerFactory.getLogger(ParamInfoController.class);
 
     @RequestMapping(value = "select")
+    @ApiOperation(value = "查询")
     public ResultVO selectParamInfo(ParamInfoVO paramInfo) {
         ResultVO resultVO = new ResultVO();
         resultVO.setSuccess(true);
@@ -36,6 +40,7 @@ public class ParamInfoController {
     }
 
     @RequestMapping(value = "insert")
+    @ApiOperation(value = "新增")
     public ResultVO insertParamInfo(ParamInfoVO paramInfo) {
         //记录日志
         TradeLogDTO tradeLog = tradeLogService.tradeLoginsert(TradeLogDTO.MODEL_OA, TradeLogDTO.TYPE_OA_insertParamInfo, paramInfo);
@@ -75,6 +80,7 @@ public class ParamInfoController {
     }
 
     @RequestMapping(value = "update")
+    @ApiOperation(value = "修改")
     public ResultVO updateParamInfo(ParamInfoVO paramInfo) {
         ResultVO resultVO = new ResultVO();
         resultVO.setSuccess(true);
@@ -106,6 +112,7 @@ public class ParamInfoController {
     }
 
     @RequestMapping(value = "delete")
+    @ApiOperation(value = "删除")
     public ResultVO deleteParamInfo(ParamInfoVO paramInfo) {
         ResultVO resultVO = new ResultVO();
         resultVO.setSuccess(true);

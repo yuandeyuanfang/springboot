@@ -4,14 +4,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.demo.service.DataService;
 import com.example.demo.service.RedisUtilService;
 import com.example.demo.vo.ParamInfoVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
 
 @RestController
+@Api(tags = "测试程序运行状态")
 public class TestController {
     @Autowired
     DataService dataService;
@@ -23,6 +25,7 @@ public class TestController {
      * @return
      */
     @RequestMapping(value = "test")
+    @ApiOperation("测试项目后端状态")
     public JSONObject test() {
         JSONObject result = new JSONObject();
         result.put("success", true);
@@ -34,6 +37,7 @@ public class TestController {
      * @return
      */
     @RequestMapping(value = "testData")
+    @ApiOperation("测试项目后端和数据库状态")
     public JSONObject testData() {
         JSONObject result = new JSONObject();
         result.put("success", true);
@@ -50,6 +54,7 @@ public class TestController {
      * 执行测试sql
      * @return
      */
+    @ApiOperation("执行测试sql")
     @RequestMapping(value = "testSql")
     public JSONObject testSql(String sql) {
         JSONObject result = new JSONObject();
@@ -69,6 +74,7 @@ public class TestController {
      * 测试Redis读取
      * @return
      */
+    @ApiOperation("测试Redis读取")
     @RequestMapping(value = "testRedis")
     public JSONObject testRedis() {
         JSONObject result = new JSONObject();

@@ -1,68 +1,64 @@
 package com.example.demo.utils;
 
-import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 农信加密解密工具类
+ * HTTP示例类
  */
+@Slf4j
 public class HttpTest {
 
-    private static String httpUrl= "";
+    private static String HTTPURL= "";
 
     public static void main(String[] args) {
-        getFace();
+        httpSend();
 	}
 
+    /**
+     * 发送HTTP请求
+     * @return
+     */
+    public static String httpSend()  {
+        String httpResult = null;
+        //组装参数
+        Map<String,Object> inputMap = new HashMap<String,Object>(){{
+            put("busiInsuType","11");
+        }};
 
-    public static String getFace()  {
-        List<String> idList = new ArrayList<>();
-        List<String> nameList = new ArrayList<>();
-        idList.add("511023199006191111");
+        //创建http请求
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(50000);//设置超时时间
+        requestFactory.setReadTimeout(50000);//设置超时时间
+        requestFactory.setOutputStreaming(false);//输出完整信息
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-        nameList.add("111");
+        //报文头
+        HttpHeaders requestHeaders = new HttpHeaders();
+//        requestHeaders.add("Content-Type", "application/json");
+//        requestHeaders.set("x-ca-key","bxgs");
+//        requestHeaders.set("x-ca-signature","1675126432211:17705F55BEE901FB0F9D881CFBBA2449DF5D1BB7085B9B83518D1F596D87A885");
 
-
-
-        for (int i=0;i<idList.size();i++){
-            //组装参数
-            JSONObject paramObj = new JSONObject();
-            paramObj.put("idNo",idList.get(i));
-            paramObj.put("name",nameList.get(i));
-
-            //创建http请求
-            SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-            requestFactory.setConnectTimeout(60000);//设置超时
-            requestFactory.setReadTimeout(60000);//设置超时
-            RestTemplate restTemplate = new RestTemplate(requestFactory);
-
-            //报文头
-            HttpHeaders requestHeaders = new HttpHeaders();
-
-            //发送请求
-            HttpEntity<MultiValueMap> entity = new HttpEntity(paramObj, requestHeaders);
-            String httpResult = restTemplate.postForObject(httpUrl, entity, String.class);
-            JSONObject jsonObject = JSONObject.parseObject(httpResult);
-            String base64Code = jsonObject.getString("result");
-            File file = new File(nameList.get(i)+idList.get(i)+".jpg");
-            ImageUtils.downloadFile(base64Code, file);
-            try {
-                Thread.sleep(100);
-            }catch (Exception e){}
-
+        //发送请求
+        HttpEntity<MultiValueMap> entity = new HttpEntity(inputMap, requestHeaders);
+        try {
+            //post请求
+            httpResult = restTemplate.postForObject(HTTPURL, entity, String.class);
+            //get请求
+//            httpResult = restTemplate.getForObject("https://zjlszlb.lshrss.cn:8003/dbwy/commercialInsuranceService/saveInsurRegistration", String.class);
+            log.info(httpResult);
+        }catch (Exception e){
+            log.error("httpError",e);
         }
 
-
-//        System.out.println(httpResult);
-        return null;
+        return httpResult;
 
     }
 

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.demo.utils.ExcelUtils;
 import com.example.demo.vo.ExcelVO;
 import com.example.demo.vo.ResultVO;
+import io.swagger.annotations.Api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Api(tags = "Excel处理")
 public class ExcelController {
     private static final Logger log = LogManager.getLogger(ExcelController.class);
 
