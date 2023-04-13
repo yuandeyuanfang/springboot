@@ -18,12 +18,12 @@ import java.util.List;
  *
  * @author lb
  */
-public class createFileByTableName_oracle_excel {
+public class createFileByTableName_mysql_excel {
 
-    private static String driverClassName = "oracle.jdbc.driver.OracleDriver";//数据库驱动名
-    private static String url = "jdbc:oracle:thin:@192.168.206.237:1521:xe";//数据库地址
-    private static String username = "ls58";//用户名
-    private static String password = "Lishui#2022";//密码
+    private static String driverClassName = "com.mysql.jdbc.Driver";//数据库驱动名
+    private static String url = "jdbc:mysql://127.0.0.1:3307/lsdhy?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false";
+    private static String username = "lsdhy";//用户名
+    private static String password = "Epsoft2021";//密码
 
     private static String filePath = "D:/createFile/";//生成文件路径名
 
@@ -44,12 +44,10 @@ public class createFileByTableName_oracle_excel {
         try {
             for (int i = 0; i < tlist.size(); i++) {
                 StringBuffer sql = new StringBuffer();
-                sql.append("select id, name,descrip, reftype, length,decode(nullable, 'Y', '是', 'N', '否') nullable from ( ");
-                sql.append(" select distinct A.COLUMN_ID as id,A.column_name name,A.data_type reftype,A.data_length as length,A.nullable,B.comments descrip ");
-                sql.append(" from user_tab_columns A  ");
-                sql.append(" left join user_col_comments B on B.Table_Name = A.Table_Name AND B.column_name=A.COLUMN_NAME ");
-                sql.append(" left join all_cons_columns C on C.Table_Name = A.Table_Name ");
-                sql.append(" where A.Table_Name='"+tlist.get(i).getTableName()+"' ORDER BY id ) aa");
+                sql.append("select c.ordinal_position as id,c.COLUMN_NAME as name,c.COLUMN_COMMENT as descrip,c.data_type as reftype, \n" +
+                        "case when c.data_type in ('bigint','decimal','int') then c.numeric_precision else c.character_maximum_length end as length,\n" +
+                        "case when c.is_nullable ='YES' then 'Y' else 'N' end as nullable \n" +
+                        "from information_schema.TABLES t,INFORMATION_SCHEMA.Columns c  where c.TABLE_NAME=t.TABLE_NAME AND c.`TABLE_SCHEMA`=t.`TABLE_SCHEMA` and t.TABLE_SCHEMA='"+username+"' and t.TABLE_NAME='"+tlist.get(i).getTableName()+"'");
                 System.out.println(sql.toString());
                 Statement stmt= connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql.toString());
@@ -79,8 +77,8 @@ public class createFileByTableName_oracle_excel {
         try {
             //where a.Table_Name ='SYS_USER'
             StringBuffer sql1 = new StringBuffer();
-            sql1.append("select t.TABLE_NAME,a.comments from user_tables t left join user_tab_comments a on t.TABLE_NAME = a.TABLE_NAME");
-            sql1.append(" where  a.comments is not null ");
+            sql1.append("select TABLE_NAME, TABLE_COMMENT comments,t.* from information_schema.TABLES t where t.TABLE_SCHEMA='"+username+"'");
+//            sql1.append(" where  a.comments is not null ");
             Statement stmt = connection.createStatement();
             System.out.println(sql1);
             ResultSet rs = stmt.executeQuery(sql1.toString());

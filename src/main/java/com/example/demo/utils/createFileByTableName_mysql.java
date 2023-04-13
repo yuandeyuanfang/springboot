@@ -19,15 +19,15 @@ import java.util.List;
  *
  * @author lb
  */
-public class createFileByTableName_oracle {
+public class createFileByTableName_mysql {
 
-    private static String driverClassName = "oracle.jdbc.driver.OracleDriver";//数据库驱动名
-    private static String url = "jdbc:oracle:thin:@192.168.206.237:1521:xe";//数据库地址
-    private static String username = "ls56";//用户名
-    private static String password = "Lishui#2022";//密码
+    private static String driverClassName = "com.mysql.jdbc.Driver";//数据库驱动名
+    private static String url = "jdbc:mysql://127.0.0.1:3307/lsdhy?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false";
+    private static String username = "lsdhy";//用户名
+    private static String password = "Epsoft2021";//密码
 
-    private static String tableName = "RCM_BUSINESS_AUDIT_HOUSE";//表名
-    private static String entityName = "BaseUserAc43";//实体类名
+    private static String tableName = "big_garden";//表名
+    private static String entityName = "bigGarden";//实体类名
     private static String packageName = "com.insigma";//包名
     private static String filePath = "D:/createFile/";//生成文件路径名
     private static String XMLType = "Mybatis";//Mybatis或者Ibatis或者Hibernate
@@ -44,7 +44,7 @@ public class createFileByTableName_oracle {
     private ResultSet rs = null;
 
     public static void main(String[] args) {
-        createFileByTableName_oracle createFileByTableName = new createFileByTableName_oracle();
+        createFileByTableName_mysql createFileByTableName = new createFileByTableName_mysql();
         createFileByTableName.createFile();
     }
 
@@ -55,13 +55,17 @@ public class createFileByTableName_oracle {
 //		JdbcUtil jdbcUtil = new JdbcUtil();
 //		con = jdbcUtil.getConnection(con);
         List<TableColumn> list = new ArrayList<TableColumn>();
-        String sql = "select t.TABLE_NAME, a.comments, t.COLUMN_NAME, b.comments,t.DATA_TYPE,t.DATA_LENGTH,t.NULLABLE,t.DATA_SCALE from user_tab_columns t left join user_tab_comments a on t.TABLE_NAME = a.TABLE_NAME left join user_col_comments b on t.TABLE_NAME = b.TABLE_NAME and t.COLUMN_NAME = b.column_name where t.TABLE_NAME = ? order by t.TABLE_NAME,t.COLUMN_ID";
+        String sql = "SELECT t.TABLE_NAME,t.TABLE_COMMENT comments,c.COLUMN_NAME,c.COLUMN_COMMENT comments,c.data_type, case when c.data_type in ('bigint','decimal','int') then c.numeric_precision else c.character_maximum_length end as \n" +
+                "DATA_LENGTH ,case when c.is_nullable ='YES' then 'Y' else 'N' end as nullable,c.numeric_scale DATA_SCALE\n" +
+                "FROM information_schema.TABLES t,INFORMATION_SCHEMA.Columns c \n" +
+                "WHERE c.TABLE_NAME=t.TABLE_NAME AND c.`TABLE_SCHEMA`=t.`TABLE_SCHEMA` AND t.`TABLE_SCHEMA`=? and t.TABLE_NAME=?";
         try {
             OracleDriver a = new OracleDriver();
             Class.forName(driverClassName);
             con = DriverManager.getConnection(url, username, password);
             ps = con.prepareStatement(sql);
-            ps.setString(1, tableName.toUpperCase());//动态写入表名
+            ps.setString(1, username);//动态写入表名
+            ps.setString(2, tableName.toUpperCase());//动态写入表名
             rs = ps.executeQuery();
             while (rs.next()) {
                 TableColumn knowledge = new TableColumn();
