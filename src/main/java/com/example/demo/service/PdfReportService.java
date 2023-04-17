@@ -3,10 +3,7 @@ package com.example.demo.service;
 import com.example.demo.utils.pdf.MyHeaderFooter;
 import com.example.demo.utils.pdf.Watermark;
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
@@ -25,7 +22,7 @@ public class PdfReportService {
             File file = new File("D:\\PDFDemo.pdf");
             file.createNewFile();
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-            writer.setPageEvent(new Watermark("HELLO ITEXTPDF"));// 水印
+            writer.setPageEvent(new Watermark("shui yin"));// 水印
             writer.setPageEvent(new MyHeaderFooter());// 页眉/页脚
 
             // 3.打开文档
@@ -112,13 +109,19 @@ public class PdfReportService {
         table.addCell(createCell("下午17:00", keyfont, Element.ALIGN_CENTER));
         table.addCell(createCell("晚上19:00", keyfont, Element.ALIGN_CENTER));
         Integer totalQuantity = 0;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             table.addCell(createCell("起床", textfont));
             table.addCell(createCell("吃午饭", textfont));
             table.addCell(createCell("午休", textfont));
             table.addCell(createCell("下午茶", textfont));
-            table.addCell(createCell("回家", textfont));
-            table.addCell(createCell("吃晚饭", textfont));
+            if(i%2==0){
+                PdfPCell pdfPCell = createCell("回家", textfont);
+                pdfPCell.setColspan(2);//表格合并
+                pdfPCell.setRowspan(2);
+                table.addCell(pdfPCell);
+            }
+
+//            table.addCell(createCell("吃晚饭", textfont));
             totalQuantity ++;
         }
         table.addCell(createCell("总计", keyfont));
