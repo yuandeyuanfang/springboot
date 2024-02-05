@@ -23,11 +23,11 @@ public class createFileByTableName_oracle {
 
     private static String driverClassName = "oracle.jdbc.driver.OracleDriver";//数据库驱动名
     private static String url = "jdbc:oracle:thin:@192.168.206.237:1521:xe";//数据库地址
-    private static String username = "ls56";//用户名
+    private static String username = "ls68";//用户名
     private static String password = "Lishui#2022";//密码
 
-    private static String tableName = "RCM_BUSINESS_AUDIT_HOUSE";//表名
-    private static String entityName = "BaseUserAc43";//实体类名
+    private static String tableName = "DWD_PTPI_TABLE_32_M";//表名
+    private static String entityName = "DWD_PTPI_TABLE_32_M";//实体类名
     private static String packageName = "com.insigma";//包名
     private static String filePath = "D:/createFile/";//生成文件路径名
     private static String XMLType = "Mybatis";//Mybatis或者Ibatis或者Hibernate
@@ -92,12 +92,13 @@ public class createFileByTableName_oracle {
                 e.printStackTrace();
             }
         }
-        createEntity(list);
+//        createEntity(list);
 //		createService(list);
 //		createServiceImpl(list);
 //        createDao(list);
-        createXml(list);
+//        createXml(list);
 //        createExcel(list);
+        createDef(list);
     }
 
     private void createExcel(List<TableColumn> list) {
@@ -788,6 +789,112 @@ public class createFileByTableName_oracle {
             }
         } else {
             return "";
+        }
+    }
+
+    /**
+     * 创建txt导入数据库def文件
+     *
+     * @param list
+     */
+    private void createDef(List<TableColumn> list) {
+        int i = 0;
+        if (list != null && list.size() > 0) {
+            File file = new File(filePath + entityName + ".def");
+            try {
+                StringBuffer sb = new StringBuffer();
+                sb.append("[General]");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("ID=Import Definition");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("Version=1");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("Header=False");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("SkipEmptyLines=True");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("SingleLineRecord=True");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("QuoteChar=\"");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("CommentLine=");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("ImportLinesStart=1");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("ImportLinesEnd=-1");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("TableOwner="+username);
+                sb.append(System.getProperty("line.separator"));
+                sb.append("OracleTable="+tableName);
+                sb.append(System.getProperty("line.separator"));
+                sb.append("InitializingScript=");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("FinalizingScript=");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("OverwriteDuplicates=True");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("CommitCount=1000");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("Filter=");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("EmptyTable=False");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("TruncateTable=False");
+                sb.append(System.getProperty("line.separator"));
+                sb.append(System.getProperty("line.separator"));
+
+                sb.append("[ODBC]");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("DSN=");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("UserName=");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("Command=");
+                sb.append(System.getProperty("line.separator"));
+                sb.append("Kind=0");
+                sb.append(System.getProperty("line.separator"));
+                sb.append(System.getProperty("line.separator"));
+
+                sb.append("[Fields]");
+                sb.append(System.getProperty("line.separator"));
+                for (TableColumn tableColumn : list) {
+                    //声明变量
+                    sb.append("Field="+i);
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("FieldStart=0");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("FieldStartValue=0");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("FieldEnd=2");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("FieldEndValue=<tab>");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("OracleSQL=");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("OracleField="+tableColumn.getColumnName()+" (VARCHAR2)");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("OracleType=0");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("ODBCField=");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("ODBCFieldNo=0");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("ODBCType=0");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("ODBCCType=0");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("ODBCLength=0");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append("OracleParamNo=0");
+                    sb.append(System.getProperty("line.separator"));
+                    sb.append(System.getProperty("line.separator"));
+                    i++;
+                }
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(sb.toString().getBytes());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
