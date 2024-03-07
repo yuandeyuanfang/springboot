@@ -189,6 +189,19 @@
 			<version>2.9.2</version>
 		</dependency>
 
+		<!--解压-->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.21</version>
+		</dependency>
+
+		<!--sftp连接-->
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.55</version>
+		</dependency>
 
 	</dependencies>
 
