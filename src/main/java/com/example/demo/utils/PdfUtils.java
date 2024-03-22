@@ -22,10 +22,8 @@ import java.awt.image.WritableRaster;
 import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class PdfUtils {
@@ -41,7 +39,7 @@ public class PdfUtils {
         //itext5生成pdf
 //        PdfReportService.main(null);
 
-        //根据pdf模板生成pdf
+        //根据pdf模板生成pdf（AcrobatDC-PDF编辑器处理模板，可用wps将word转为pdf）
         pdfUtils.exportPDFByTemplate(null);
     }
 
@@ -237,7 +235,7 @@ public class PdfUtils {
 
     public void exportPDFByTemplate(HttpServletResponse response) throws IOException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String template = "D:/templates/pdfTemplate.pdf";
+        String template = String.valueOf(PdfUtils.class.getClassLoader().getResource("templates/pdfTemplate.pdf"));
         // 生成导出PDF的文件名称
         String fileName = URLEncoder.encode("PDF生成.pdf", "UTF-8");
         // 设置响应头
@@ -255,7 +253,7 @@ public class PdfUtils {
 //            out = response.getOutputStream();
 //            File file = new File("D:PDF生成.pdf");
 //            file.createNewFile();
-            out = new FileOutputStream("D:\\PDF生成.pdf");
+            out = new FileOutputStream("D:\\"+fileName);
             // 读取PDF模板表单
             reader = new PdfReader(template);
             // 字节数组流，用来缓存文件流
