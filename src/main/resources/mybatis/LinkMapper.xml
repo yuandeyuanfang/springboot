@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.LinkMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.dto.LinkDTO">
+    <id column="RID" jdbcType="VARCHAR" property="rid" />
+    <result column="LONG_URL" jdbcType="VARCHAR" property="longUrl" />
+    <result column="SHORT_URL" jdbcType="VARCHAR" property="shortUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    RID, LONG_URL, SHORT_URL
+  </sql>
+
+  <select id="selectByShortUrl" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LINK
+    where SHORT_URL = #{shortUrl,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByLongUrl" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LINK
+    where LONG_URL = #{longUrl,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LINK
+    where RID = #{rid,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from LINK
+    where RID = #{rid,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.example.demo.dto.LinkDTO" useGeneratedKeys="true">
+    insert into LINK
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        rid,
+      </if>
+      <if test="longUrl != null">
+        LONG_URL,
+      </if>
+      <if test="shortUrl != null">
+        SHORT_URL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        #{rid,jdbcType=VARCHAR},
+      </if>
+      <if test="longUrl != null">
+        #{longUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="shortUrl != null">
+        #{shortUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.dto.LinkDTO">
+    update LINK
+    <set>
+      <if test="longUrl != null">
+        LONG_URL = #{longUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="shortUrl != null">
+        SHORT_URL = #{shortUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where RID = #{rid,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.dto.LinkDTO">
+    update LINK
+    set LONG_URL = #{longUrl,jdbcType=VARCHAR},
+      SHORT_URL = #{shortUrl,jdbcType=VARCHAR},
+    where RID = #{rid,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

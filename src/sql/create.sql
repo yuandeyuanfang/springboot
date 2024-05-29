@@ -43,3 +43,19 @@ comment on column TRADE_LOG.TRADE_BEGAIN is '交易开始时间';
 comment on column TRADE_LOG.TRADE_END is '交易结束时间';
 comment on column TRADE_LOG.TRADE_COST is '交易花费时间（毫秒）';
 comment on column TRADE_LOG.TRADE_DATE is '交易日期';
+
+create table LINK
+(
+  rid       VARCHAR2(60) not null,
+  long_url  VARCHAR2(500) not null,
+  short_url VARCHAR2(200) not null
+);
+comment on table LINK is '链接转换表';
+comment on column LINK.rid
+  is '主键';
+comment on column LINK.long_url
+  is '长链接';
+comment on column LINK.short_url
+  is '短链接';
+
+alter table LINK add primary key (RID) ;
