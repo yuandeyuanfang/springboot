@@ -34,6 +34,10 @@
         values (#{paramName,jdbcType=VARCHAR},#{paramValue,jdbcType=VARCHAR},#{paramMemo,jdbcType=VARCHAR})
     </insert>
 
+    <insert id="insertParseLog" parameterType="com.example.demo.entity.ParseLog">
+        insert into Parse_Log  (sql_Str, key_Word ,sql_time) values(#{sqlStr,jdbcType=VARCHAR},#{keyWord,jdbcType=VARCHAR},#{sqlTime})
+    </insert>
+
     <update id="updateParamInfo" parameterType="com.example.demo.vo.ParamInfoVO">
         update param_info set
         <trim suffixOverrides=",">

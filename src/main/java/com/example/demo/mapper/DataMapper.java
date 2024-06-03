@@ -1,5 +1,6 @@
 package com.example.demo.mapper;
 
+import com.example.demo.entity.ParseLog;
 import com.example.demo.vo.ParamInfoVO;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
@@ -21,4 +22,6 @@ public interface DataMapper {
     void deleteParamInfo(ParamInfoVO paramInfo);
 
     List<ParamInfoVO> selectParamInfoPage(ParamInfoVO paramInfo, RowBounds rowBounds);
+
+    void insertParseLog(ParseLog parseLog);
 }

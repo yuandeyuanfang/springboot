@@ -59,3 +59,18 @@ comment on column LINK.short_url
   is '短链接';
 
 alter table LINK add primary key (RID) ;
+
+
+create table Parse_Log
+(
+  sql_Str                      VARCHAR2(4000) not null,
+  key_Word                   VARCHAR2(1000) not null,
+  sql_time             DATE
+)
+comment on table Parse_Log is '日志文件解析表';
+comment on column Parse_Log.sql_Str
+  is '解析出的sql语句';
+comment on column Parse_Log.key_Word
+  is '解析关键字';
+comment on column Parse_Log.sql_time
+  is 'sql执行时间';
