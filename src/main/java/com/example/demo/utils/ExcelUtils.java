@@ -191,21 +191,21 @@ public class ExcelUtils {
         if (cell == null) {
             return "";
         }
-        if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+        if (cell.getCellType() == CellType.NUMERIC) {
             if (HSSFDateUtil.isCellDateFormatted(cell)) {
                 return HSSFDateUtil.getJavaDate(cell.getNumericCellValue()).toString();
             } else {
                 return new BigDecimal(cell.getNumericCellValue()).toString();
             }
-        } else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+        } else if (cell.getCellType() == CellType.STRING) {
             return StringUtils.trimToEmpty(cell.getStringCellValue());
-        } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+        } else if (cell.getCellType() == CellType.FORMULA) {
             return StringUtils.trimToEmpty(cell.getCellFormula());
-        } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+        } else if (cell.getCellType() == CellType.BLANK) {
             return "";
-        } else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+        } else if (cell.getCellType() == CellType.BOOLEAN) {
             return String.valueOf(cell.getBooleanCellValue());
-        } else if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
+        } else if (cell.getCellType() == CellType.ERROR) {
             return "ERROR";
         } else {
             return cell.toString().trim();
@@ -249,11 +249,11 @@ public class ExcelUtils {
 
                 CellStyle cellStyle = wb.createCellStyle();
                 cellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-                cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-                cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
+                cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                cellStyle.setAlignment(HorizontalAlignment.CENTER);
 
                 Font font = wb.createFont();
-                font.setBoldweight(Font.BOLDWEIGHT_NORMAL);
+//                font.setBoldweight(Font.BOLDWEIGHT_NORMAL);
                 cellStyle.setFont(font);
                 cell.setCellStyle(cellStyle);
                 cell.setCellValue(columnName);
@@ -336,31 +336,31 @@ public class ExcelUtils {
         if (cell == null) {
             return "";
         }
-        if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+        if (cell.getCellType() == CellType.NUMERIC) {
             if (HSSFDateUtil.isCellDateFormatted(cell)) {
                 return HSSFDateUtil.getJavaDate(cell.getNumericCellValue()).toString();
             } else {
                 String cellstr = cell.toString();
-                cell.setCellType(Cell.CELL_TYPE_STRING);
+                cell.setCellType(CellType.STRING);
                 String cellValue = cell.getStringCellValue();
                 if (cellValue.indexOf(".") > -1) {
                     cellValue = cellstr;
                 }
                 return cellValue;
             }
-        } else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+        } else if (cell.getCellType() == CellType.STRING) {
             return StringUtils.trimToEmpty(cell.getStringCellValue());
-        } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+        } else if (cell.getCellType() == CellType.FORMULA) {
             try {
                 return StringUtils.trimToEmpty(String.valueOf(cell.getNumericCellValue()));
             } catch (IllegalStateException e) {
                 return StringUtils.trimToEmpty(String.valueOf(cell.getRichStringCellValue()));
             }
-        } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+        } else if (cell.getCellType() == CellType.BLANK) {
             return "";
-        } else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+        } else if (cell.getCellType() == CellType.BOOLEAN) {
             return String.valueOf(cell.getBooleanCellValue());
-        } else if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
+        } else if (cell.getCellType() == CellType.ERROR) {
             return "ERROR";
         } else {
             return cell.toString().trim();
@@ -390,7 +390,7 @@ public class ExcelUtils {
             for (int j = 0; j < col; j++) {
                 HSSFCell cell = r.createCell(j);
                 cell.setCellStyle(style11_1);
-                cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+                cell.setCellType(CellType.STRING);
                 if (i >= hideRow) {
                     setBorder(wb, sheet, new CellRangeAddress(i, i, j, j));
                 }
@@ -405,10 +405,10 @@ public class ExcelUtils {
      * @param row
      */
     public static void setBorder(HSSFWorkbook wb,HSSFSheet s,CellRangeAddress row){
-        RegionUtil.setBorderBottom(1, row, s,wb); // 下边�?
-        RegionUtil.setBorderLeft(1, row, s,wb); // 左边�?
-        RegionUtil.setBorderRight(1, row, s,wb); // 有边�?
-        RegionUtil.setBorderTop(1, row, s,wb); // 上边�?
+//        RegionUtil.setBorderBottom(1, row, s,wb); // 下边�?
+//        RegionUtil.setBorderLeft(1, row, s,wb); // 左边�?
+//        RegionUtil.setBorderRight(1, row, s,wb); // 有边�?
+//        RegionUtil.setBorderTop(1, row, s,wb); // 上边�?
     }
     /**
      * 设置列宽
@@ -451,7 +451,7 @@ public class ExcelUtils {
         HSSFFont font = wb.createFont();
         font.setFontName("宋体");
         if(boldweight){
-            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//粗体显示
+//            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//粗体显示
         }
         font.setFontHeightInPoints((short) fontHeightInPoints);
         return font;
@@ -473,13 +473,13 @@ public class ExcelUtils {
         // 带上下左右边界�?�居中�?�自动换�?
         HSSFCellStyle style = wb.createCellStyle();
         if(flag){
-            style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-            style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-            style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-            style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+//            style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+//            style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+//            style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+//            style.setBorderTop(HSSFCellStyle.BORDER_THIN);
         }
-        style.setAlignment((short)alignment);// 设置居中对齐;
-        style.setVerticalAlignment((short)verticalAlignment);// 设置垂直对齐的样式为居中对齐;
+//        style.setAlignment((short)alignment);// 设置居中对齐;
+//        style.setVerticalAlignment((short)verticalAlignment);// 设置垂直对齐的样式为居中对齐;
         style.setWrapText(true);// 自动换行
         return style;
     }
