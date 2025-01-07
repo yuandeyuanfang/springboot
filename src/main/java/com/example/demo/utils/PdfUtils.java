@@ -60,6 +60,7 @@ public class PdfUtils {
                 BufferedImage srcImage = resize(image, image.getWidth(), image.getHeight());
                 ImageIO.write(srcImage, "PNG", new File(pngPath.replace(".",i+".")));
             }
+            doc.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,6 +85,7 @@ public class PdfUtils {
             }
             //合成图片转pdf
             createPDFFromImage(pdfOutPath,images);
+            doc.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

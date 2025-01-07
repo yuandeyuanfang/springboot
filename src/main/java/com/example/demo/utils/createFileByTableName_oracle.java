@@ -22,12 +22,12 @@ import java.util.List;
 public class createFileByTableName_oracle {
 
     private static String driverClassName = "oracle.jdbc.driver.OracleDriver";//数据库驱动名
-    private static String url = "jdbc:oracle:thin:@192.168.206.237:1521:xe";//数据库地址
-    private static String username = "ls68";//用户名
+    private static String url = "jdbc:oracle:thin:@10.200.20.239:1521/oracleisgpsz001";//数据库地址
+    private static String username = "ls56";//用户名
     private static String password = "Lishui#2022";//密码
 
-    private static String tableName = "DWD_PTPI_TABLE_32_M";//表名
-    private static String entityName = "DWD_PTPI_TABLE_32_M";//实体类名
+    private static String tableName = "RCM_QXMATTER_RECORD";//表名
+    private static String entityName = "sybwcb";//实体类名
     private static String packageName = "com.insigma";//包名
     private static String filePath = "D:/createFile/";//生成文件路径名
     private static String XMLType = "Mybatis";//Mybatis或者Ibatis或者Hibernate
@@ -92,13 +92,13 @@ public class createFileByTableName_oracle {
                 e.printStackTrace();
             }
         }
-//        createEntity(list);
+        createEntity(list);
 //		createService(list);
 //		createServiceImpl(list);
 //        createDao(list);
-//        createXml(list);
+        createXml(list);
 //        createExcel(list);
-        createDef(list);
+//        createDef(list);
     }
 
     private void createExcel(List<TableColumn> list) {
@@ -768,10 +768,10 @@ public class createFileByTableName_oracle {
                     return "Date";
                 }
             } else {
-                return "";
+                return "String";
             }
         } else {
-            return "";
+            return "String";
         }
     }
 
