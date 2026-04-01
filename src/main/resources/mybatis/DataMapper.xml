@@ -58,4 +58,8 @@
         delete from param_info where param_name = #{paramName}
     </delete>
 
+    <select id="getSequence" resultType="java.lang.Long">
+        select TRADE_LOG_SEQ.NEXTVAL from dual
+    </select>
+
 </mapper>
