@@ -40,7 +40,11 @@ public class Scheduler {
         log.info("JVM最大内存空间为：" + vmMax + " MB");
 
         //测试数据库连接状态
-        log.info("数据库连接状态：" + dataService.testData());
+        try {
+            dataService.testData();
+        } catch (Exception e) {
+            log.error("数据库连接失败", e);
+        }
 
         //刷新缓存
         paramInfoCache.init();
